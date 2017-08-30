@@ -33,7 +33,7 @@ func ExampleTextCleanser() {
 
 	fn4 := dec(text.Ident)
 	fmt.Println(fn4(s))
-	s += "\n\n%% Something extra: someInitMethod.\n"
+	s += "\n\n%% Something extra: UpperCamelCase and someInitMethod.\n"
 	fmt.Printf("\n>>>>\n'%s'\n", s)
 	fmt.Printf("%#v\n", text.GetWords(s, dec))
 
@@ -52,10 +52,10 @@ func ExampleTextCleanser() {
 	// >>>>
 	// 'Hello~~, play_ground#5!
 	//
-	// %% Something extra: someInitMethod.
+	// %% Something extra: UpperCamelCase and someInitMethod.
 	// '
-	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "", "something", "extra", "some", "init", "method", "", "", "", "", "golang"}
-	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "some", "init", "method", "golang"}
+	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "", "something", "extra", "", "upper", "camel", "case", "and", "some", "init", "method", "", "", "", "", "golang"}
+	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "upper", "camel", "case", "and", "some", "init", "method", "golang"}
 }
 
 // to show the full code in GoDoc
