@@ -16,10 +16,10 @@ import (
 // Constant and data type/structure definitions
 
 // TextCleanser defines the function type for text cleansing
-type TextCleanser = func(string) string
+type TextCleanser func(string) string
 
 // TextCleanserDecorator is the text cleansing function Decorator
-type TextCleanserDecorator = func(TextCleanser) TextCleanser
+type TextCleanserDecorator func(TextCleanser) TextCleanser
 
 ////////////////////////////////////////////////////////////////////////////
 // Function definitions
