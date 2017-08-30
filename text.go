@@ -71,6 +71,14 @@ func RemovePunctuation(c TextCleanser) TextCleanser {
 	}
 }
 
+// Compact cleanse all consecutive punctuations into a single space
+func Compact(c TextCleanser) TextCleanser {
+	return func(s string) string {
+		f := regexp.MustCompile(`\s+`).ReplaceAllString(s, " ")
+		return c(f)
+	}
+}
+
 // Ident -- "identity" just return the same string
 func Ident(s string) string {
 	return s
@@ -84,4 +92,12 @@ func Decorators(ds ...TextCleanserDecorator) TextCleanserDecorator {
 		}
 		return c
 	}
+}
+
+//==========================================================================
+// Other support functions
+
+func GetWords(document string, dc TextCleanserDecorator) []string {
+	fn := dc(Ident)
+	return strings.Split(fn(document), " ")
 }

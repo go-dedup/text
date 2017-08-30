@@ -32,12 +32,29 @@ func ExampleTextCleanser() {
 
 	fn4 := dec(text.Ident)
 	fmt.Println(fn4(s))
+	s += "\n\n%% Something extra.\n"
+	fmt.Printf("\n>>>>\n'%s'\n", s)
+	fmt.Printf("%#v\n", text.GetWords(s, dec))
+
+	dec = text.Decorators(
+		dec,
+		text.Compact,
+	)
+	fmt.Printf("%#v\n", text.GetWords(s, dec))
 
 	// Output:
 	// Hello~~, play_ground#5!
 	// hello~~, play_ground#5!
 	// DECORATED: hello~~, play_ground#5! -golang
 	// DECORATED hello   play ground 5   golang
+	//
+	// >>>>
+	// 'Hello~~, play_ground#5!
+	//
+	// %% Something extra.
+	// '
+	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "something", "extra", "", "", "", "golang"}
+	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "golang"}
 }
 
 // to show the full code in GoDoc
