@@ -25,6 +25,7 @@ func ExampleTextCleanser() {
 	// pass it the function of type text.TextCleanser that you want to decorate.
 	dec := text.Decorators(
 		text.ToAppend(" -GOLANG"),
+		text.SplitCamelCase,
 		text.ToLower,
 		text.ToPrepend("DECORATED: "),
 		text.RemovePunctuation,
@@ -32,7 +33,7 @@ func ExampleTextCleanser() {
 
 	fn4 := dec(text.Ident)
 	fmt.Println(fn4(s))
-	s += "\n\n%% Something extra.\n"
+	s += "\n\n%% Something extra: someInitMethod.\n"
 	fmt.Printf("\n>>>>\n'%s'\n", s)
 	fmt.Printf("%#v\n", text.GetWords(s, dec))
 
@@ -46,15 +47,15 @@ func ExampleTextCleanser() {
 	// Hello~~, play_ground#5!
 	// hello~~, play_ground#5!
 	// DECORATED: hello~~, play_ground#5! -golang
-	// DECORATED hello   play ground 5   golang
+	// DECORATED hello   play ground 5    golang
 	//
 	// >>>>
 	// 'Hello~~, play_ground#5!
 	//
-	// %% Something extra.
+	// %% Something extra: someInitMethod.
 	// '
-	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "something", "extra", "", "", "", "golang"}
-	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "golang"}
+	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "", "something", "extra", "some", "init", "method", "", "", "", "", "golang"}
+	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "some", "init", "method", "golang"}
 }
 
 // to show the full code in GoDoc

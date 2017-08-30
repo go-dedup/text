@@ -10,6 +10,8 @@ package text
 import (
 	"regexp"
 	"strings"
+
+	"github.com/danverbraganza/varcaser/varcaser"
 )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -23,6 +25,17 @@ type TextCleanserDecorator func(TextCleanser) TextCleanser
 
 ////////////////////////////////////////////////////////////////////////////
 // Function definitions
+
+// SplitCamelCase split each CamelCase word in the text to individual words
+func SplitCamelCase(c TextCleanser) TextCleanser {
+	return func(s string) string {
+		f := regexp.MustCompile(`_`).ReplaceAllString(
+			varcaser.Caser{
+				From: varcaser.LowerCamelCase, To: varcaser.LowerSnakeCase}.
+				String(s), " ")
+		return c(f)
+	}
+}
 
 // ToLower cleanse the text to lower case
 func ToLower(c TextCleanser) TextCleanser {
