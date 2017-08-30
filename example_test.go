@@ -9,7 +9,7 @@ import (
 // for standalone test, change package to `main` and the next func def to,
 // func main() {
 func ExampleTextCleanser() {
-	s := "Hello, playground"
+	s := "Hello~~, play_ground#5!"
 
 	var fn text.TextCleanser = text.Ident
 	fmt.Println(fn(s))
@@ -27,14 +27,19 @@ func ExampleTextCleanser() {
 		text.ToAppend(" -GOLANG"),
 		text.ToLower,
 		text.ToPrepend("DECORATED: "),
+		text.RemovePunctuation,
 	)
 
 	fn4 := dec(text.Ident)
 	fmt.Println(fn4(s))
 
 	// Output:
-	// Hello, playground
-	// hello, playground
-	// DECORATED: hello, playground -golang
-	// DECORATED: hello, playground -golang
+	// Hello~~, play_ground#5!
+	// hello~~, play_ground#5!
+	// DECORATED: hello~~, play_ground#5! -golang
+	// DECORATED hello   play ground 5   golang
+}
+
+// to show the full code in GoDoc
+type dummy struct {
 }

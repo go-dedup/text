@@ -8,6 +8,7 @@
 package text
 
 import (
+	"regexp"
 	"strings"
 )
 
@@ -46,6 +47,27 @@ func ToPrepend(prefix string) TextCleanserDecorator {
 		return func(s string) string {
 			return c(prefix + s)
 		}
+	}
+}
+
+// RemovePunctuation cleanse all punctuations from the text
+func RemovePunctuation(c TextCleanser) TextCleanser {
+
+	removePunctuation := func(r rune) rune {
+		if strings.ContainsRune(",:;", r) {
+			return -1
+		} else if strings.ContainsRune("_", r) {
+			return ' '
+		} else if regexp.MustCompile(`\W`).MatchString(string(r)) {
+			return ' '
+		} else {
+			return r
+		}
+	}
+
+	return func(s string) string {
+		rp := strings.Map(removePunctuation, s)
+		return c(rp)
 	}
 }
 
