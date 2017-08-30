@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/danverbraganza/varcaser/varcaser"
+	"github.com/go-dedup/megophone"
 )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -29,11 +30,11 @@ type TextCleanserDecorator func(TextCleanser) TextCleanser
 // SplitCamelCase split each CamelCase word in the text to individual words
 func SplitCamelCase(c TextCleanser) TextCleanser {
 	return func(s string) string {
-		f := regexp.MustCompile(`_`).ReplaceAllString(
+		sn := regexp.MustCompile(`_`).ReplaceAllString(
 			varcaser.Caser{
 				From: varcaser.LowerCamelCase, To: varcaser.LowerSnakeCase}.
 				String(s), " ")
-		return c(f)
+		return c(sn)
 	}
 }
 
@@ -42,6 +43,14 @@ func ToLower(c TextCleanser) TextCleanser {
 	return func(s string) string {
 		lower := strings.ToLower(s)
 		return c(lower)
+	}
+}
+
+// ToDoubleMetaphone transforms the text to DoubleMetaphones
+func ToDoubleMetaphone(c TextCleanser) TextCleanser {
+	return func(s string) string {
+		p1, p2 := megophone.DoubleMetaphone(s)
+		return c(p1 + " " + p2)
 	}
 }
 
@@ -87,8 +96,8 @@ func RemovePunctuation(c TextCleanser) TextCleanser {
 // Compact cleanse all consecutive punctuations into a single space
 func Compact(c TextCleanser) TextCleanser {
 	return func(s string) string {
-		f := regexp.MustCompile(`\s+`).ReplaceAllString(s, " ")
-		return c(f)
+		sn := regexp.MustCompile(`\s+`).ReplaceAllString(s, " ")
+		return c(sn)
 	}
 }
 
@@ -110,7 +119,21 @@ func Decorators(ds ...TextCleanserDecorator) TextCleanserDecorator {
 //==========================================================================
 // Other support functions
 
+// Doc2Words defines the function type for doc to words
+type Doc2Words func(document string, dc TextCleanserDecorator) []string
+
 func GetWords(document string, dc TextCleanserDecorator) []string {
 	fn := dc(Ident)
 	return strings.Split(fn(document), " ")
+}
+
+func GetDoubleMetaphone(document string, dc TextCleanserDecorator) []string {
+	var ret []string
+	fn := dc(Ident)
+	words := strings.Split(fn(document), " ")
+	for _, key := range words {
+		p1, p2 := megophone.DoubleMetaphone(key)
+		ret = append(ret, p1, p2)
+	}
+	return ret
 }

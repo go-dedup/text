@@ -43,6 +43,14 @@ func ExampleTextCleanser() {
 	)
 	fmt.Printf("%#v\n", text.GetWords(s, dec))
 
+	s = "Andrej cabrillo Gallegos Germany Jankelowicz"
+	fmt.Printf("\n>>>>\n'%s'\n", s)
+	dec = text.Decorators(
+		text.ToDoubleMetaphone,
+	)
+	fmt.Printf("%#v\n", text.GetWords(s, dec))
+	fmt.Printf("%#v\n", text.GetDoubleMetaphone(s, text.Decorators()))
+
 	// Output:
 	// Hello~~, play_ground#5!
 	// hello~~, play_ground#5!
@@ -56,6 +64,11 @@ func ExampleTextCleanser() {
 	// '
 	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "", "something", "extra", "", "upper", "camel", "case", "and", "some", "init", "method", "", "", "", "", "golang"}
 	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "upper", "camel", "case", "and", "some", "init", "method", "golang"}
+	//
+	// >>>>
+	// 'Andrej cabrillo Gallegos Germany Jankelowicz'
+	// []string{"antrjkprlklkskrmnjnklts", "antrkprkksjrmnanklfx"}
+	// []string{"antrj", "antr", "kprl", "kpr", "klks", "kks", "krmn", "jrmn", "jnklts", "anklfx"}
 }
 
 // to show the full code in GoDoc
