@@ -43,6 +43,9 @@ func ExampleTextCleanser() {
 	)
 	fmt.Printf("%#v\n", text.GetWords(s, dec))
 
+	fn5 := text.GetWordsFactory(dec)
+	fmt.Printf("%#v\n", fn5(s))
+
 	s = "Andrej cabrillo Gallegos Germany Jankelowicz"
 	fmt.Printf("\n>>>>\n'%s'\n", s)
 	dec = text.Decorators(
@@ -50,6 +53,13 @@ func ExampleTextCleanser() {
 	)
 	fmt.Printf("%#v\n", text.GetWords(s, dec))
 	fmt.Printf("%#v\n", text.GetDoubleMetaphone(s, text.Decorators()))
+
+	dec = text.Decorators(
+		text.SplitCamelCase,
+		text.Compact,
+	)
+	fn5 = text.GetDoubleMetaphoneFactory(dec)
+	fmt.Printf("%#v\n", fn5(s))
 
 	// Output:
 	// Hello~~, play_ground#5!
@@ -64,10 +74,12 @@ func ExampleTextCleanser() {
 	// '
 	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "", "something", "extra", "", "upper", "camel", "case", "and", "some", "init", "method", "", "", "", "", "golang"}
 	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "upper", "camel", "case", "and", "some", "init", "method", "golang"}
+	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "upper", "camel", "case", "and", "some", "init", "method", "golang"}
 	//
 	// >>>>
 	// 'Andrej cabrillo Gallegos Germany Jankelowicz'
 	// []string{"antrjkprlklkskrmnjnklts", "antrkprkksjrmnanklfx"}
+	// []string{"antrj", "antr", "kprl", "kpr", "klks", "kks", "krmn", "jrmn", "jnklts", "anklfx"}
 	// []string{"antrj", "antr", "kprl", "kpr", "klks", "kks", "krmn", "jrmn", "jnklts", "anklfx"}
 }
 
