@@ -27,6 +27,9 @@ type TextCleanserDecorator func(TextCleanser) TextCleanser
 ////////////////////////////////////////////////////////////////////////////
 // Function definitions
 
+//==========================================================================
+// Decorator higher-order functions
+
 // SplitCamelCase split each CamelCase word in the text to individual words
 func SplitCamelCase(c TextCleanser) TextCleanser {
 	return func(s string) string {
@@ -121,19 +124,9 @@ func Decorators(ds ...TextCleanserDecorator) TextCleanserDecorator {
 //==========================================================================
 // Other support functions
 
-// Doc2Words defines the function type for doc to words
-type Doc2Words func(document string) []string
-
 func GetWords(document string, dc TextCleanserDecorator) []string {
 	fn := dc(Ident)
 	return strings.Split(fn(document), " ")
-}
-
-func GetWordsFactory(dc TextCleanserDecorator) Doc2Words {
-	return func(document string) []string {
-		fn := dc(Ident)
-		return strings.Split(fn(document), " ")
-	}
 }
 
 func GetDoubleMetaphone(document string, dc TextCleanserDecorator) []string {
@@ -145,6 +138,19 @@ func GetDoubleMetaphone(document string, dc TextCleanserDecorator) []string {
 		ret = append(ret, p1, p2)
 	}
 	return ret
+}
+
+//==========================================================================
+// Curried functions for the above support functions
+
+// Doc2Words defines the function type for doc to words
+type Doc2Words func(document string) []string
+
+func GetWordsFactory(dc TextCleanserDecorator) Doc2Words {
+	return func(document string) []string {
+		fn := dc(Ident)
+		return strings.Split(fn(document), " ")
+	}
 }
 
 func GetDoubleMetaphoneFactory(dc TextCleanserDecorator) Doc2Words {
