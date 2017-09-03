@@ -80,6 +80,8 @@ func RemovePunctuation(c TextCleanser) TextCleanser {
 			return -1
 		} else if strings.ContainsRune("_", r) {
 			return ' '
+		} else if strings.ContainsRune("$", r) {
+			return r
 		} else if regexp.MustCompile(`\W`).MatchString(string(r)) {
 			return ' '
 		} else {
