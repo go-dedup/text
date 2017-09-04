@@ -8,10 +8,11 @@
 package text
 
 import (
+	"bytes"
 	"regexp"
 	"strings"
+	"unicode"
 
-	"github.com/danverbraganza/varcaser/varcaser"
 	"github.com/go-dedup/megophone"
 )
 
@@ -33,11 +34,30 @@ type TextCleanserDecorator func(TextCleanser) TextCleanser
 // SplitCamelCase split each CamelCase word in the text to individual words
 func SplitCamelCase(c TextCleanser) TextCleanser {
 	return func(s string) string {
-		sn := regexp.MustCompile(`_`).ReplaceAllString(
-			varcaser.Caser{
-				From: varcaser.LowerCamelCase, To: varcaser.LowerSnakeCase}.
-				String(s), " ")
-		return c(sn)
+		buf := bytes.NewBufferString("")
+		start, lastCap := 0, 0
+		for end, r := range s {
+			if end != 0 && unicode.IsUpper(r) {
+				// keep all caps like GNU together
+				if end != lastCap+1 {
+					// if previous char isn't space
+					if s[end-1:end] != " " {
+						//fmt.Printf("%d,: '%s'\n", end, s[end-1:end+1])
+						buf.WriteByte(' ')
+					}
+					buf.WriteString(s[start:end])
+					start = end
+				}
+				lastCap = end
+			}
+		}
+		if start != len(s) {
+			if start > 0 && s[start-1:start] != " " {
+				buf.WriteByte(' ')
+			}
+			buf.WriteString(s[start:])
+		}
+		return c(buf.String())
 	}
 }
 
@@ -102,6 +122,14 @@ func RemovePunctuation(c TextCleanser) TextCleanser {
 func Compact(c TextCleanser) TextCleanser {
 	return func(s string) string {
 		sn := regexp.MustCompile(`\s+`).ReplaceAllString(s, " ")
+		return c(sn)
+	}
+}
+
+// Trim cleanse all leading and trailing spaces
+func Trim(c TextCleanser) TextCleanser {
+	return func(s string) string {
+		sn := strings.Trim(s, " ")
 		return c(sn)
 	}
 }

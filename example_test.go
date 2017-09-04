@@ -33,8 +33,8 @@ func ExampleTextCleanser() {
 
 	fn4 := dec(text.Ident)
 	fmt.Println(fn4(s))
-	s += "\n\n%% Something extra: UpperCamelCase and someInitMethod.\n"
-	fmt.Printf("\n>>>>\n'%s'\n", s)
+	s += "\n.\n%% Something extra: UpperCamelCase and someInitMethod.\n"
+	fmt.Printf(".\n>>>>\n'%s'\n", s)
 	fmt.Printf("%#v\n", text.GetWords(s, dec))
 
 	dec = text.Decorators(
@@ -47,7 +47,7 @@ func ExampleTextCleanser() {
 	fmt.Printf("%#v\n", fn5(s))
 
 	s = "Andrej cabrillo Gallegos Germany Jankelowicz"
-	fmt.Printf("\n>>>>\n'%s'\n", s)
+	fmt.Printf(".\n>>>>\n'%s'\n", s)
 	dec = text.Decorators(
 		text.ToDoubleMetaphone,
 	)
@@ -65,17 +65,17 @@ func ExampleTextCleanser() {
 	// Hello~~, play_ground#5!
 	// hello~~, play_ground#5!
 	// DECORATED: hello~~, play_ground#5! -golang
-	// DECORATED hello   play ground 5    golang
-	//
+	// DECORATED  hello   play ground 5    golang
+	// .
 	// >>>>
 	// 'Hello~~, play_ground#5!
-	//
+	// .
 	// %% Something extra: UpperCamelCase and someInitMethod.
 	// '
 	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "", "something", "extra", "", "upper", "camel", "case", "and", "some", "init", "method", "", "", "", "", "golang"}
 	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "upper", "camel", "case", "and", "some", "init", "method", "golang"}
 	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "upper", "camel", "case", "and", "some", "init", "method", "golang"}
-	//
+	// .
 	// >>>>
 	// 'Andrej cabrillo Gallegos Germany Jankelowicz'
 	// []string{"antrjkprlklkskrmnjnklts", "antrkprkksjrmnanklfx"}
