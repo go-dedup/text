@@ -65,14 +65,14 @@ func ExampleTextCleanser() {
 	// Hello~~, play_ground#5!
 	// hello~~, play_ground#5!
 	// DECORATED: hello~~, play_ground#5! -golang
-	// DECORATED  hello   play ground 5    golang
+	// DECORATED hello   play ground 5   golang
 	// .
 	// >>>>
 	// 'Hello~~, play_ground#5!
 	// .
 	// %% Something extra: UpperCamelCase and someInitMethod.
 	// '
-	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "", "something", "extra", "", "upper", "camel", "case", "and", "some", "init", "method", "", "", "", "", "golang"}
+	// []string{"DECORATED", "hello", "", "", "play", "ground", "5", "", "", "", "", "", "", "something", "extra", "upper", "camel", "case", "and", "some", "init", "method", "", "", "", "golang"}
 	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "upper", "camel", "case", "and", "some", "init", "method", "golang"}
 	// []string{"DECORATED", "hello", "play", "ground", "5", "something", "extra", "upper", "camel", "case", "and", "some", "init", "method", "golang"}
 	// .
