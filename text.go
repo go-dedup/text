@@ -8,8 +8,10 @@
 package text
 
 import (
+	"bytes"
 	"regexp"
 	"strings"
+	"unicode"
 
 	"github.com/go-dedup/megophone"
 )
@@ -34,6 +36,22 @@ func SplitCamelCase(c TextCleanser) TextCleanser {
 	return func(s string) string {
 		sn := regexp.MustCompile(`([a-z0-9])([A-Z]+)`).ReplaceAllString(s, "$1 $2")
 		return c(sn)
+	}
+}
+
+// SplitCamelCaseUnicode split each CamelCase word in the text to individual words, unicode aware.
+func SplitCamelCaseUnicode(c TextCleanser) TextCleanser {
+	return func(s string) string {
+		var b bytes.Buffer
+		splittable := false
+		for _, v := range s {
+			if splittable && unicode.IsUpper(v) {
+				b.WriteByte(' ')
+			}
+			b.WriteRune(v)
+			splittable = unicode.IsLower(v) || unicode.IsNumber(v)
+		}
+		return c(b.String())
 	}
 }
 

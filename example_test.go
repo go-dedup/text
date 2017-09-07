@@ -61,6 +61,13 @@ func ExampleTextCleanser() {
 	fn5 = text.GetDoubleMetaphoneFactory(dec)
 	fmt.Printf("%#v\n", fn5(s))
 
+	s = "NãoMeFazMal ÇaNeMeFaitPasMal PòssoMangiâFàMâ"
+	fmt.Printf(".\n>>>>\n'%s'\n", s)
+	dec = text.Decorators(
+		text.SplitCamelCaseUnicode,
+	)
+	fmt.Printf("%#v\n", text.GetWords(s, dec))
+
 	// Output:
 	// Hello~~, play_ground#5!
 	// hello~~, play_ground#5!
@@ -81,6 +88,10 @@ func ExampleTextCleanser() {
 	// []string{"antrjkprlklkskrmnjnklts", "antrkprkksjrmnanklfx"}
 	// []string{"antrj", "antr", "kprl", "kpr", "klks", "kks", "krmn", "jrmn", "jnklts", "anklfx"}
 	// []string{"antrj", "antr", "kprl", "kpr", "klks", "kks", "krmn", "jrmn", "jnklts", "anklfx"}
+	// .
+	// >>>>
+	// 'NãoMeFazMal ÇaNeMeFaitPasMal PòssoMangiâFàMâ'
+	// []string{"Não", "Me", "Faz", "Mal", "Ça", "Ne", "Me", "Fait", "Pas", "Mal", "Pòsso", "Mangiâ", "Fà", "Mâ"}
 }
 
 // to show the full code in GoDoc
